@@ -8,12 +8,12 @@ const rules = {
   min: undefined,
   pattern: '',
   required: false,
-  type: 'any'
+  type: ''
 }
 
 export const widgetForm = {
-  list: [],
-  config: {
+  list: [], //已选的组件列表
+  config: { //表单配置信息
     size: 'default',
     hideRequiredAsterisk: false,
     labelWidth: 100,
@@ -23,7 +23,7 @@ export const widgetForm = {
 // 基础组件
 export const basicComponents = [
   {
-    label: '单行文本',
+    label: '输入框',
     type: 'input',
     options: {
       width: '100%',

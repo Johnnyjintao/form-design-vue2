@@ -4,12 +4,12 @@
     <div class="widget-list">
       <Draggable 
         :list="list"
-        :options="{group:{name: 'itxst',pull:'clone',put:false}}"
+        :options="{group:{name: 'formdrag',pull:'clone',put:false}}"
         :sort=false
         animation="300"
         >
           <transition-group>
-              <div class="widget-item" v-for="listitem in list" :key="listitem.type">
+              <div class="widget-c" v-for="listitem in list" :key="listitem.type">
                 {{listitem.label}}
               </div>
           </transition-group>
@@ -20,7 +20,7 @@
   
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent, PropType } from 'vue'
 import Draggable from 'vuedraggable'
 import SvgIcon from './SvgIcon.vue'
@@ -50,15 +50,21 @@ export default defineComponent({
   font-size: 14px;
 }
 .widget-list{
+    box-sizing: border-box;
   overflow: hidden;
-  .widget-item{
+  .widget-c{
     font-size: 12px;
     float: left;
     padding: 5px 10px;
-    border: 1px solid #222222;
     border-radius: 5px;
     margin: 0 10px 10px 0;
     cursor: all-scroll;
+    background-color: aliceblue;
+    color: #555555;
+    &:hover{
+      outline: 2px solid rgb(222, 237, 251);
+      outline-offset: -2px;
+    }
   }
 }
 

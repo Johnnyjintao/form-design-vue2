@@ -1,5 +1,5 @@
 <template>
-  <el-form label-position="top" v-if="data" :key="data.key">
+  <el-form label-position="right" label-width="80px" size="small" v-if="data" :key="data.key">
     <el-form-item label="字段标识" v-if="data.type !== 'grid'">
       <el-input v-model="data.model" />
     </el-form-item>
@@ -13,7 +13,7 @@
     </el-form-item>
 
     <el-form-item label="占位内容" v-if="hasKey('placeholder')">
-      <el-input v-model="data.options.placeholder" />
+      <el-input v-model="data.options.placeholder" placeholder="字段的placeholder"/>
     </el-form-item>
 
     <el-form-item
@@ -185,36 +185,22 @@
         </el-input>
       </el-space>
       <template v-else>
-        <template
-          v-if="
-            data.type === 'radio' ||
-            (data.type === 'select' && !data.options.multiple)
-          "
-        >
+        <template v-if="data.type === 'radio' || (data.type === 'select' && !data.options.multiple)">
           <el-radio-group
             v-model="data.options.defaultValue"
-            style="margin-top: 8px"
-          >
+            style="margin-top: 8px">
             <Draggable
               tag="ul"
               item-key="index"
               ghostClass="ghost"
-              handle=".drag-item"
+              class="drag-ul"
               :group="{ name: 'options' }"
               :list="data.options.options"
             >
               <template #item="{ element, index }">
-                <div
-                  style="display: flex; align-items: center; margin-bottom: 5px"
-                >
-                  <el-radio
-                    :label="element.value"
-                    style="margin-right: 0px; margin-bottom: 0"
-                  >
-                    <el-input
-                      :style="{
-                        width: data.options.showLabel ? '90px' : '180px'
-                      }"
+                <div style="display: flex; align-items: center; margin-bottom: 5px">
+                  <el-radio :label="element.value" style="margin-right: 0px; margin-bottom: 0">
+                    <el-input :style="{width: data.options.showLabel ? '90px' : '180px'}"
                       v-model="element.value"
                     />
                     <el-input
@@ -399,33 +385,18 @@
           ghostClass="ghost"
           handle=".drag-item"
           :group="{ name: 'options' }"
-          :list="data.columns"
-        >
-          <template #item="{ element, index }">
-            <li style="margin-bottom: 5px">
-              <SvgIcon iconClass="item" className="drag-item" />
-              <el-input-number
-                placeholder="栅格值"
-                v-model.number="element.span"
-                :min="0"
-                :max="24"
-              />
-              <el-button
-                type="primary"
-                circle
-                style="margin-left: 5px"
-                @click="handleOptionsRemove(index)"
-              >
-                <SvgIcon iconClass="delete" />
-              </el-button>
-            </li>
-          </template>
+          v-model="data.columns">
+          <li class="drag-li" v-for="(element,index) of data.columns">
+            <SvgIcon iconClass="item" className="drag-item" />
+            <el-input type="number" placeholder="栅格值" v-model="element.span" :min="0" :max="24"/>
+            <el-button type="primary" circle style="margin-left: 5px" @click="handleOptionsRemove(index)">
+              <SvgIcon iconClass="delete" />
+            </el-button>
+          </li>
         </Draggable>
 
         <div>
-          <el-button type="text" @click="handleInsertColumn">
-            添加列
-          </el-button>
+          <el-button type="text" @click="handleInsertColumn">添加列</el-button>
         </div>
       </el-form-item>
 
@@ -532,7 +503,7 @@
   </el-form>
 </template>
 
-<script lang="ts">
+<script>
 import Draggable from 'vuedraggable'
 import SvgIcon from '@/components/SvgIcon.vue'
 
@@ -625,3 +596,27 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.el-form-item{
+  margin-bottom: 10px !important;
+}
+ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  .drag-li{
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 25px;
+  }
+}
+.drag-item{
+  font-size:24px;
+  margin:0 5px;
+  cursor:move;
+}
+        
+
+</style>

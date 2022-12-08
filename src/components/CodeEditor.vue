@@ -1,19 +1,29 @@
 <template>
-  <div ref="aceRef" style="width: 100%; height:  350px;"></div>
+  <div class="container">
+    <editor
+      ref="aceEditor"
+      @init="editorInit"
+      height="350"
+      lang="json"
+      :theme="theme"
+      :options="{
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true,
+        tabSize:6,
+        fontSize:14,
+      }"
+    ></editor>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs, watch } from 'vue'
-import ace, { Ace } from 'ace-builds'
-
-interface State {
-  aceRef?: HTMLElement
-  codeEditor?: Ace.Editor
-}
-
-export default defineComponent({
-  name: 'CodeEditor',
-  props: {
+<script >
+export default {
+  data() {
+    return {
+    };
+  },
+  props:{
     value: {
       type: String,
       default: ''
@@ -26,52 +36,24 @@ export default defineComponent({
       tyle: String,
       default: 'github'
     },
-    readonly: {
-      type: Boolean,
-      default: false
-    }
   },
-  emits: ['update:value'],
-  setup(props, context) {
-    const state = reactive<State>({
-      aceRef: undefined,
-      codeEditor: undefined
-    })
+  components: {
+    editor: require("vue2-ace-editor")
+  },
+  methods: {
+    editorInit() {//初始化
+      require("brace/ext/language_tools"); //language extension prerequsite...
+      require("brace/mode/"+this.$props.language); //language
+      // require("brace/theme/tomorrow_night");
+      require("brace/theme/"+this.$props.theme);
+      require("brace/snippets/"+this.$props.language); //snippet
+      this.$refs.aceEditor.editor.setValue(this.$props.value)
 
-    onMounted(() => {
-      state.codeEditor = ace.edit(state.aceRef!, {
-        mode: `ace/mode/${props.language}`,
-        theme: `ace/theme/${props.theme}`,
-        value: props.value,
-        readOnly: props.readonly,
-        fontSize: 12,
-        tabSize: 2
-      })
-
-      state.codeEditor.on('change', () =>
-        context.emit('update:value', state.codeEditor?.getValue())
-      )
-    })
-
-    watch(
-      () => props.value,
-      val => {
-        if (state.codeEditor) {
-          const currentPosition = state.codeEditor?.selection.getCursor()
-          state.codeEditor.setValue(val)
-          state.codeEditor.clearSelection()
-          state.codeEditor.gotoLine(
-            currentPosition.row + 1,
-            currentPosition.column,
-            true
-          )
-        }
-      }
-    )
-
-    return {
-      ...toRefs(state)
-    }
+    },
+  },
+  mounted() {
+    this.editorInit();
   }
-})
+};
+
 </script>

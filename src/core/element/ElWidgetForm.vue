@@ -8,10 +8,10 @@
       :label-width="`${widgetForm.config.labelWidth}px`"
       :hide-required-asterisk="widgetForm.config.hideRequiredAsterisk"
     >
-    <Draggable class="form-d-card child" v-model="widgetForm.list" group="itxst" 
+    <Draggable class="form-d-card child" v-model="widgetForm.list" group="formdrag" 
       ghostClass="ghost"
       animation="100" @add="handleMoveAdd">
-        <div :key="element.id" class="widget-view" v-for="(element,index) of widgetForm.list">
+        <div @click="handleItemClick(element)" :key="element.id" class="widget-view" v-for="(element,index) of widgetForm.list">
             <el-row
               class="widget-col"
               type="flex"
@@ -21,25 +21,20 @@
               :gutter="element.options.gutter ?? 0"
               :justify="element.options.justify"
               :align="element.options.align"
-              @click="handleItemClick(element)"
             >
-              <el-col
-                v-for="(col, colIndex) of element.columns"
-                :key="colIndex"
-                :span="col.span ?? 0"
-              >
+              <el-col v-for="(col, colIndex) of element.columns" :key="colIndex" :span="col.span ?? 0" >
                 <Draggable
                   class="widget-col-list"
                   item-key="key"
                   ghostClass="ghost"
                   handle=".drag-widget"
-                  :animation="200"
-                  :group="{ name: 'people' }"
+                  :animation="100"
+                  group="formdrag"
                   :no-transition-on-drag="true"
-                  :list="col.list"
+                  v-model="col.list"
                   @add="handleColMoveAdd($event, element, colIndex)"
                 >
-                  <div>
+                  <div :key="element.key" class="widget-view" @click.stop="handleItemClick(element)" v-for="(element,index) of col.list">
                     <transition-group name="fade" tag="div">
                       <ElWidgetFormItem
                         v-if="element.key"
@@ -47,7 +42,6 @@
                         :element="element"
                         :config="widgetForm.config"
                         :selectWidget="widgetFormSelect"
-                        @click.stop="handleItemClick(element)"
                         @copy="handleCopyClick(index, col.list)"
                         @delete="handleDeleteClick(index, col.list)"
                       />
@@ -56,7 +50,6 @@
                 </Draggable>
               </el-col>
               <div class="widget-col-action" v-if="widgetFormSelect?.key === element.key">
-                <i class="el-icon-document-copy" @click.stop="handleCopyClick(index, widgetForm.list)"></i>
                 <i class="el-icon-delete" @click.stop="handleDeleteClick(index, widgetForm.list)"></i>
               </div>
             </el-row>
@@ -78,7 +71,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Draggable from 'vuedraggable'
 import { v4 } from 'uuid'
 import ElWidgetFormItem from './ElWidgetFormItem.vue'
@@ -261,7 +254,6 @@ export default {
           }
         }
       }
-
       this.$emit('update:widgetFormSelect', row.columns[index].list[newIndex])
     }
   }

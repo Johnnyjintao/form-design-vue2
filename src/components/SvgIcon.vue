@@ -10,7 +10,7 @@
   </svg>
 </template>
 
-<script lang="ts">
+<script>
 import * as utils from '@/utils'
 
 export default {

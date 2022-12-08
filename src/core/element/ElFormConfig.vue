@@ -1,7 +1,7 @@
 <template>
   <div class="form-config-container">
-    <el-form label-position="top">
-      <el-form-item label="标签对齐方式">
+    <el-form label-position="right" label-width="100px" size="small">
+      <el-form-item label="对齐方式">
         <el-radio-group v-model="data.labelPosition">
           <el-radio-button label="left">左对齐</el-radio-button>
           <el-radio-button label="right">右对齐</el-radio-button>
@@ -10,7 +10,7 @@
       </el-form-item>
 
       <el-form-item label="标签宽度">
-        <el-input-number v-model.number="data.labelWidth" :min="0" />
+        <el-input type="number" v-model="data.labelWidth" :min="0" />
       </el-form-item>
 
       <el-form-item label="组件尺寸">
@@ -28,7 +28,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 
 export default {
   name: 'ElFormConfig',
@@ -53,6 +53,13 @@ export default {
     },
   },
   mounted(){
+    this.data = this.$props.config;
   }
 }
 </script>
+
+<style scoped>
+.el-form-item{
+  margin-bottom: 10px !important;
+}
+</style>

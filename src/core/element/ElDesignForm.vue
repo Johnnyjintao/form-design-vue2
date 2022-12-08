@@ -1,40 +1,87 @@
 <template>
   <div class="formDesign">
-    <div class="form-d-card left">
-      <ComponentGroup title="基础组件" :list="basicComponents"/>
-      <ComponentGroup title="高级组件" :list="advanceComponents"/>
-      <ComponentGroup title="布局组件" :list="layoutComponents"/>
-    </div>
-    
-    <div class="form-d-card center">
-      <ElCustomHeader
-        v-bind="$props"
-        @preview="() => (previewVisible = true)"
-        @uploadJson="() => (uploadJsonVisible = true)"
-        @generateJson="handleGenerateJson"
-        @generateCode="handleGenerateCode"
-        @clearable="handleClearable"
-      >
-        <slot name="header"></slot>
-      </ElCustomHeader>
+    <div class="formDesign-content">
+      <div class="form-d-card left">
+        <ComponentGroup title="基础组件" :list="basicComponents"/>
+        <ComponentGroup title="高级组件" :list="advanceComponents"/>
+        <ComponentGroup title="布局组件" :list="layoutComponents"/>
+      </div>
+      
+      <div class="form-d-card center">
+        <ElCustomHeader
+          v-bind="$props"
+          @preview="() => (previewVisible = true)"
+          @uploadJson="() => (uploadJsonVisible = true)"
+          @generateJson="handleGenerateJson"
+          @generateCode="handleGenerateCode"
+          @clearable="handleClearable"
+        >
+          <slot name="header"></slot>
+        </ElCustomHeader>
 
-      <ElWidgetForm
-        ref="widgetFormRef"
-        :widgetForm.sync="widgetForm"
-        :widgetFormSelect.sync="widgetFormSelect"
-      />
+        <ElWidgetForm
+          ref="widgetFormRef"
+          :widgetForm.sync="widgetForm"
+          :widgetFormSelect.sync="widgetFormSelect"
+        />
+      </div>
+      <div class="form-d-card right">
+        <el-tabs v-model="configTab">
+          <el-tab-pane label="字段属性" name="widget">
+              <ElWidgetConfig v-show="configTab === 'widget'" :select.sync="widgetFormSelect"/>
+          </el-tab-pane>
+          <el-tab-pane label="表单属性" name="form">
+              <ElFormConfig v-show="configTab === 'form'" :config.sync="widgetForm.config"/>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
     </div>
-    <div class="form-d-card right">
-      <el-tabs v-model="configTab">
-        <el-tab-pane label="字段属性" name="widget">
-            <ElWidgetConfig v-show="configTab === 'widget'" :select.sync="widgetFormSelect"/>
-        </el-tab-pane>
-        <el-tab-pane label="表单属性" name="form">
-            <ElFormConfig v-show="configTab === 'form'" :config.sync="widgetForm.config"/>
-        </el-tab-pane>
-      </el-tabs>
+    <div class="dialog">
+      
+      <el-dialog :visible.sync="uploadJsonVisible" @close="(uploadJsonVisible=false)" title="导入JSON">
+        <el-alert
+          type="info"
+          title="JSON格式如下，直接复制生成的json覆盖此处代码点击确定即可"
+          style="margin-bottom: 10px"
+        />
+        <CodeEditor :value.sync="jsonEg" language="json" />
+        <template #footer>
+          <el-button @click="() => (uploadJsonVisible = false)">取消</el-button>
+          <el-button type="primary" @click="handleUploadJson">导入</el-button>
+        </template>
+      </el-dialog>
+
+      <el-dialog :visible.sync="previewVisible" title="预览" width="800">
+        <ElRealForm
+          ref="realFormRef"
+          v-if="previewVisible"
+          :data="widgetForm"
+        />
+        <template #footer>
+          <el-button @click="handleReset">重置</el-button>
+          <el-button type="primary" @click="handleGetData">获取数据</el-button>
+        </template>
+
+        <el-dialog :visible.sync="dataJsonVisible" title="获取数据" width="800" zIndex="999">
+          <CodeEditor :value.sync="dataJsonTemplate" language="json" readonly />
+
+          <template #footer>
+            <el-button @click="() => (dataJsonVisible = false)"
+              >取消</el-button
+            >
+            <el-button
+              type="primary"
+              @click="handleCopyClick(dataJsonTemplate)"
+              >Copy</el-button
+            >
+          </template>
+        </el-dialog>
+      </el-dialog>
+
+
     </div>
   </div>
+
 </template>
 
 <script>
@@ -44,7 +91,10 @@ import ComponentGroup from '@/components/ComponentGroup.vue'
 import ElCustomHeader from './ElCustomHeader.vue'
 import ElWidgetForm from './ElWidgetForm.vue'
 import ElFormConfig from './ElFormConfig.vue'
-import ElWidgetConfig from './ElWidgetConfig.vue'
+import ElWidgetConfig from './ElWidgetConfig/index.vue'
+import ElRealForm from './ElRealForm.vue'
+
+import CodeEditor from '@/components/CodeEditor.vue'
 
   export default {
     name: 'ElDesignForm',
@@ -55,9 +105,12 @@ import ElWidgetConfig from './ElWidgetConfig.vue'
         layoutComponents,
         previewVisible:false,
         uploadJsonVisible:false,
-        widgetForm: JSON.parse(JSON.stringify(widgetForm)),
-        widgetFormSelect: undefined,
-        configTab: 'widget',
+        dataJsonVisible: false,
+        widgetForm: JSON.parse(JSON.stringify(widgetForm)),//已选的组件列表
+        widgetFormSelect: undefined,//当前选中的组件
+        configTab: 'widget', //widget:字段属性 form:表单属性
+        jsonEg: JSON.stringify(widgetForm, null, 2),
+        dataJsonTemplate: '',
       }
     },
     components:{
@@ -67,6 +120,8 @@ import ElWidgetConfig from './ElWidgetConfig.vue'
       ElWidgetForm,
       ElFormConfig,
       ElWidgetConfig,
+      ElRealForm,
+      CodeEditor
     },
     props: {
       preview: {
@@ -90,8 +145,35 @@ import ElWidgetConfig from './ElWidgetConfig.vue'
         default: true
       },
     },
+    mounted(){
+    },  
     methods:{
-      handleGenerateJson(){},
+      handleReset(){
+        return this.$refs.realFormRef.reset()
+      },
+      handleGetData() {
+        this.$refs.realFormRef.getData().then((res) => {
+          this.dataJsonTemplate = JSON.stringify(res, null, 2)
+          this.dataJsonVisible = true
+        })
+      },
+      handleUploadJson() {
+        try {
+          this.widgetForm.list = []
+          this.widgetForm = {...this.widgetForm, ...JSON.parse(this.jsonEg)}
+          if (this.widgetForm.list) {
+            this.widgetFormSelect = this.widgetForm.list[0]
+          }
+
+          this.uploadJsonVisible = false
+          this.$message.success('导入成功')
+        } catch (error) {
+          this.$message.error('导入失败')
+        }
+      },
+      handleGenerateJson(){
+        // this.uploadJsonVisible = true;
+      },
       handleGenerateCode(){},
       handleClearable(){},
       handleMoveAdd(e){
@@ -121,6 +203,9 @@ import ElWidgetConfig from './ElWidgetConfig.vue'
 
 <style lang="less">
   .formDesign{
+    height: 100%;
+  }
+  .formDesign-content{
     height: 100%;
     display: flex;
     padding: 10px;
@@ -160,7 +245,7 @@ import ElWidgetConfig from './ElWidgetConfig.vue'
       overflow-y: auto;
     }
     &.right{
-      width: 300px;
+      width: 350px;
     }
 
     .form-d-card-title{

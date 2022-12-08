@@ -54,7 +54,7 @@
   </header>
 </template>
 
-<script lang="ts">
+<script>
 import SvgIcon from '@/components/SvgIcon.vue'
 
 export default {
