@@ -1,5 +1,7 @@
 <template>
     <el-form label-position="right" label-width="80px" size="small" v-if="data" :key="data.key">
+      <h4>基础参数</h4>
+
       <el-form-item label="字段标识">
         <el-input v-model="data.model" />
       </el-form-item>
@@ -79,7 +81,12 @@
             >清除</el-checkbox
           >
         </el-form-item>
-  
+        <el-alert
+          title="更多参数，可参考element-ui官网配置，支持所有参数 https://element.eleme.cn/#/zh-CN/component/input"
+          type="success"
+          effect="dark">
+        </el-alert>
+        
         <template v-if="hasKey('rules')">
           <h4>验证规则</h4>
   

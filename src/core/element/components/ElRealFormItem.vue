@@ -9,6 +9,7 @@
           :clearable="element.options.clearable"
           :readonly="element.options.readonly"
           :disabled="disabled || element.options.disabled"
+          v-bind="element.options"
         >
           <template #prefix v-if="element.options.prefix">{{ element.options.prefix }}</template>
           <template #suffix v-if="element.options.suffix">{{ element.options.suffix }}</template>
@@ -228,6 +229,7 @@
   
   <script>
   import SvgIcon from '@/components/SvgIcon.vue'
+import { mounted } from 'vue2-ace-editor'
   
   export default {
     name: 'ElGenerateFormItem',
@@ -252,15 +254,30 @@
         required: true
       }
     },
-    computed:{
-      data:{
-        get() {
-          return this.$props.model[this.$props.element.model]
-        },
-        set(val) {
-          this.$props.model[this.$props.element.model] = val
-        }
+    // computed:{
+    //   data:{
+    //     get() {
+    //       return this.$props.model[this.$props.element.model]
+    //     },
+    //     set(val) {
+    //       this.$props.model[this.$props.element.model] = val
+    //     }
+    //   }
+    // },
+    data(){
+      return {
+        data:"",
       }
+    },
+    mounted(){
+      this.data = this.$props.model[this.$props.element.model];
+    },
+    watch:{
+      data(val){
+        let newmodel = this.$props.model;
+        newmodel[this.$props.element.model] = val
+        this.$emit("update:model",newmodel)
+      },
     },
     methods:{
       handleFilterOption(input, option){

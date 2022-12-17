@@ -37,21 +37,20 @@
       </div>
     </div>
     <div class="dialog">
-      
       <el-dialog :visible.sync="uploadJsonVisible" @close="(uploadJsonVisible=false)" title="导入JSON">
         <el-alert
           type="info"
           title="JSON格式如下，直接复制生成的json覆盖此处代码点击确定即可"
           style="margin-bottom: 10px"
         />
-        <CodeEditor :value.sync="jsonEg" language="json" />
+        <CodeEditor :value="jsonEg" language="json" />
         <template #footer>
           <el-button @click="() => (uploadJsonVisible = false)">取消</el-button>
           <el-button type="primary" @click="handleUploadJson">导入</el-button>
         </template>
       </el-dialog>
 
-      <el-dialog :visible.sync="previewVisible" title="预览" width="800">
+      <el-dialog :visible.sync="previewVisible" title="预览" width="800px">
         <ElRealForm
           ref="realFormRef"
           v-if="previewVisible"
@@ -62,8 +61,8 @@
           <el-button type="primary" @click="handleGetData">获取数据</el-button>
         </template>
 
-        <el-dialog :visible.sync="dataJsonVisible" title="获取数据" width="800" zIndex="999">
-          <CodeEditor :value.sync="dataJsonTemplate" language="json" readonly />
+        <el-dialog :visible.sync="dataJsonVisible" title="获取数据" width="800px" zIndex="999">
+          <CodeEditor :value="dataJsonTemplate" language="json" readonly />
 
           <template #footer>
             <el-button @click="() => (dataJsonVisible = false)"
@@ -78,6 +77,28 @@
         </el-dialog>
       </el-dialog>
 
+      <el-dialog :visible.sync="generateJsonVisible" title="生成JSON" width="800px">
+        <CodeEditor :value="generateJsonTemplate" language="json" readonly />
+
+        <template #footer>
+          <el-button @click="() => (generateJsonVisible = false)">取消</el-button>
+          <el-button type="primary" @click="handleCopyClick(generateJsonTemplate)">Copy</el-button>
+        </template>
+      </el-dialog>
+
+      <el-dialog :visible.sync="dataCodeVisible" title="生产代码" width="800px">
+        <CodeEditor :value="dataCodeTemplate" language="html" readonly />
+        <template #footer>
+          <el-button @click="() => (dataCodeVisible = false)"
+            >取消</el-button
+          >
+          <el-button
+            type="primary"
+            @click="handleCopyClick(dataCodeTemplate)"
+            >Copy</el-button
+          >
+        </template>
+      </el-dialog>
 
     </div>
   </div>
@@ -95,6 +116,8 @@ import ElWidgetConfig from './ElWidgetConfig/index.vue'
 import ElRealForm from './ElRealForm.vue'
 
 import CodeEditor from '@/components/CodeEditor.vue'
+import { copy } from '@/utils'
+import generateCode from '@/utils/generateCode'
 
   export default {
     name: 'ElDesignForm',
@@ -106,11 +129,16 @@ import CodeEditor from '@/components/CodeEditor.vue'
         previewVisible:false,
         uploadJsonVisible:false,
         dataJsonVisible: false,
+        generateJsonVisible:false,
+        dataCodeVisible: false,
+        codeLanguage:"",
         widgetForm: JSON.parse(JSON.stringify(widgetForm)),//已选的组件列表
+        generateJsonTemplate: {},
         widgetFormSelect: undefined,//当前选中的组件
         configTab: 'widget', //widget:字段属性 form:表单属性
         jsonEg: JSON.stringify(widgetForm, null, 2),
         dataJsonTemplate: '',
+        dataCodeTemplate: '',
       }
     },
     components:{
@@ -148,6 +176,11 @@ import CodeEditor from '@/components/CodeEditor.vue'
     mounted(){
     },  
     methods:{
+      handleCopyClick(text){
+        copy(text)
+        this.$message.success('Copy成功')
+      },
+      
       handleReset(){
         return this.$refs.realFormRef.reset()
       },
@@ -172,10 +205,24 @@ import CodeEditor from '@/components/CodeEditor.vue'
         }
       },
       handleGenerateJson(){
-        // this.uploadJsonVisible = true;
+        console.log(this.widgetForm)
+        this.generateJsonTemplate = JSON.stringify(this.widgetForm,null,2);
+        this.generateJsonVisible = true;
       },
-      handleGenerateCode(){},
-      handleClearable(){},
+      handleGenerateCode(){
+        this.codeLanguage = "vue";
+        this.dataCodeVisible = true;
+        this.dataCodeTemplate = generateCode(
+          this.widgetForm,
+          this.codeLanguage,
+          "element"
+        )
+      },
+      handleClearable(){
+        this.widgetForm.list = [];
+        this.widgetForm = JSON.parse(JSON.stringify(this.widgetForm));
+        this.widgetFormSelect = undefined
+      },
       handleMoveAdd(e){
         // let i = e.newDraggableIndex;
         // this.arr2[i].loaded = true;

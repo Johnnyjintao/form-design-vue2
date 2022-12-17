@@ -7,9 +7,6 @@
       lang="json"
       :theme="theme"
       :options="{
-        enableBasicAutocompletion: true,
-        enableSnippets: true,
-        enableLiveAutocompletion: true,
         tabSize:6,
         fontSize:14,
       }"
@@ -37,6 +34,12 @@ export default {
       default: 'github'
     },
   },
+  watch:{
+    value(val){
+      this.$refs.aceEditor.editor.setValue(val)
+      this.$refs.aceEditor.editor.clearSelection()
+    },
+  },
   components: {
     editor: require("vue2-ace-editor")
   },
@@ -44,11 +47,11 @@ export default {
     editorInit() {//初始化
       require("brace/ext/language_tools"); //language extension prerequsite...
       require("brace/mode/"+this.$props.language); //language
-      // require("brace/theme/tomorrow_night");
+      require("brace/theme/tomorrow_night");
       require("brace/theme/"+this.$props.theme);
       require("brace/snippets/"+this.$props.language); //snippet
       this.$refs.aceEditor.editor.setValue(this.$props.value)
-
+      this.$refs.aceEditor.editor.clearSelection()
     },
   },
   mounted() {

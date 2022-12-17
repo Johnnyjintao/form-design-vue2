@@ -17,6 +17,7 @@
           :maxlength="parseInt(element.options.maxlength)"
           :clearable="element.options.clearable"
           :disabled="element.options.disabled"
+          v-bind="element.options"
         >
           <template #prefix v-if="element.options.prefix">
             {{ element.options.prefix }}

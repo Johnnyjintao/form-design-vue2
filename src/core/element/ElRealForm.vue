@@ -27,7 +27,7 @@
             >
               <ElRealFormItem
                 v-for="colItem of col.list"
-                :model="model"
+                :model.sync="model"
                 :key="colItem.key"
                 :element="colItem"
                 :config="data.config"
@@ -38,7 +38,7 @@
         </template>
         <ElRealFormItem
           v-else
-          :model="model"
+          :model.sync="model"
           :key="element.key"
           :element="widgetForm.list[index]"
           :config="data.config"
@@ -96,6 +96,7 @@ export default {
     this.generateOptions(this.widgetForm?.list ?? [])
   },
   methods:{
+    
     generateModel(list) {
       for (let index = 0; index < list.length; index++) {
         const model = list[index].model
@@ -106,15 +107,14 @@ export default {
           list[index].columns.forEach((col) => generateModel(col.list))
         } else {
           if (this.$props.value && Object.keys(this.$props.value).includes(model)) {
-            this.model[model] = this.$props.value[model]
+            this.$set(this.model,model,this.$props.value[model])
           } else {
-            this.model[model] = list[index].options.defaultValue
+            this.$set(this.model,model,list[index].options.defaultValue)
           }
-
-          this.rules[model] = [list[index].options.rules]
+          this.$set(this.rules,model,[list[index].options.rules])
         }
       }
-
+      console.log("this.model",this.model)
       console.log("this.rules",this.rules)
     },
     generateOptions(list) {
