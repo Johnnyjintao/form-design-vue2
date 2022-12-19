@@ -26,9 +26,9 @@ export const basicComponents = [
     label: '输入框',
     type: 'input',
     options: {
-      width: '100%',
+      width: '200px',
       defaultValue: '',
-      placeholder: '',
+      placeholder: '请输入',
       maxlength: null,
       prefix: '',
       suffix: '',
@@ -41,38 +41,34 @@ export const basicComponents = [
     }
   },
   {
-    label: '密码框',
-    type: 'password',
+    label: '下拉选择框',
+    type: 'select',
     options: {
-      width: '100%',
       defaultValue: '',
-      placeholder: '',
-      maxlength: null,
-      prefix: '',
-      suffix: '',
-      prepend: '',
-      append: '',
-      showPassword: true,
-      disabled: false,
+      width: '200px',
+      multiple: false,
+      placeholder: '请选择',
+      filterable: false,
       clearable: false,
-      readonly: false,
-      rules
-    }
-  },
-  {
-    label: '多行文本',
-    type: 'textarea',
-    options: {
-      width: '100%',
-      defaultValue: '',
-      placeholder: '',
-      maxlength: null,
-      rows: 4,
-      autosize: false,
-      showWordLimit: false,
       disabled: false,
-      clearable: false,
-      readonly: false,
+      props: {
+        label: 'label',
+        value: 'value'
+      },
+      options: [
+        {
+          label: 'label1',
+          value: 'value1'
+        },
+        {
+          label: 'label2',
+          value: 'value2'
+        },
+        {
+          label: 'label3',
+          value: 'value3'
+        }
+      ],
       rules
     }
   },
@@ -80,7 +76,7 @@ export const basicComponents = [
     label: '计数器',
     type: 'number',
     options: {
-      width: '',
+      width: '200px',
       defaultValue: 0,
       min: 0,
       max: 100,
@@ -94,27 +90,24 @@ export const basicComponents = [
     type: 'radio',
     options: {
       defaultValue: '',
-      width: '',
+      width: '200px',
       inline: true,
       remote: false,
       showLabel: false,
-      remoteFunc:
-        'https://raw.githubusercontent.com/fuchengwei/vue-form-create/master/mock/mock.json',
       options: [
         {
-          value: 'Option 1',
-          label: 'Option 1'
+          label: 'label1',
+          value: 'value1'
         },
         {
-          value: 'Option 2',
-          label: 'Option 2'
+          label: 'label2',
+          value: 'value2'
         },
         {
-          value: 'Option 3',
-          label: 'Option 3'
+          label: 'label3',
+          value: 'value3'
         }
       ],
-      remoteOptions: [],
       props: {
         value: 'value',
         label: 'label'
@@ -128,7 +121,7 @@ export const basicComponents = [
     type: 'checkbox',
     options: {
       defaultValue: [],
-      width: '',
+      width: '200px',
       inline: true,
       remote: false,
       showLabel: false,
@@ -162,7 +155,7 @@ export const basicComponents = [
     type: 'time',
     options: {
       defaultValue: '',
-      width: '',
+      width: '200px',
       placeholder: '请选择时间',
       format: 'HH:mm:ss',
       valueFormat: 'HH:mm:ss',
@@ -177,10 +170,11 @@ export const basicComponents = [
     label: '日期选择器',
     type: 'date',
     options: {
+      type:"date",
       defaultValue: '',
-      width: '',
-      placeholder: '请选择时间',
-      format: 'YYYY-MM-DD',
+      width: '200px',
+      placeholder: '请选择',
+      format: '',
       readonly: false,
       editable: true,
       clearable: true,
@@ -199,43 +193,7 @@ export const basicComponents = [
       rules
     }
   },
-  {
-    label: '下拉选择框',
-    type: 'select',
-    options: {
-      defaultValue: '',
-      width: '200px',
-      multiple: false,
-      placeholder: '',
-      remote: false,
-      showLabel: false,
-      filterable: false,
-      clearable: false,
-      disabled: false,
-      props: {
-        label: 'label',
-        value: 'value'
-      },
-      options: [
-        {
-          label: 'Option 1',
-          value: 'Option 1'
-        },
-        {
-          label: 'Option 2',
-          value: 'Option 2'
-        },
-        {
-          label: 'Option 3',
-          value: 'Option 3'
-        }
-      ],
-      remoteOptions: [],
-      remoteFunc:
-        'https://raw.githubusercontent.com/fuchengwei/vue-form-create/master/mock/mock.json',
-      rules
-    }
-  },
+
   {
     label: '开关',
     type: 'switch',
@@ -252,7 +210,7 @@ export const basicComponents = [
     type: 'slider',
     options: {
       defaultValue: 0,
-      width: '',
+      width: '200px',
       min: 0,
       max: 100,
       step: 1,
@@ -292,7 +250,7 @@ export const advanceComponents = [
     type: 'richtext-editor',
     options: {
       defaultValue: '',
-      width: '',
+      width: '200px',
       disabled: false
     }
   },

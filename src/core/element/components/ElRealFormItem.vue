@@ -18,41 +18,6 @@
         </el-input>
       </template>
   
-      <template v-if="element.type === 'password'">
-        <el-input
-          v-model="data"
-          :style="{ width: element.options.width }"
-          :placeholder="element.options.placeholder"
-          :maxlength="parseInt(element.options.maxlength)"
-          :clearable="element.options.clearable"
-          :disabled="disabled || element.options.disabled"
-          :readonly="element.options.readonly"
-          :show-password="element.options.showPassword"
-        >
-          <template #prefix v-if="element.options.prefix">{{ element.options.prefix }}</template>
-          <template #suffix v-if="element.options.suffix">{{ element.options.suffix }}</template>
-          <template #prepend v-if="element.options.prepend">{{ element.options.prepend }}</template>
-          <template #append v-if="element.options.append">{{ element.options.append }}</template>
-        </el-input>
-      </template>
-  
-      <template v-if="element.type === 'textarea'">
-        <el-input
-          type="textarea"
-          resize="none"
-          v-model="data"
-          :rows="element.options.rows"
-          :style="{ width: element.options.width }"
-          :placeholder="element.options.placeholder"
-          :maxlength="parseInt(element.options.maxlength)"
-          :show-word-limit="element.options.showWordLimit"
-          :autosize="element.options.autosize"
-          :clearable="element.options.clearable"
-          :readonly="element.options.readonly"
-          :disabled="disabled || element.options.disabled"
-        />
-      </template>
-  
       <template v-if="element.type === 'number'">
         <el-input-number
           v-model="data"
@@ -60,6 +25,7 @@
           :max="element.options.max"
           :min="element.options.min"
           :disabled="disabled || element.options.disabled"
+          v-bind="element.options"
         />
       </template>
   
@@ -68,6 +34,7 @@
           v-model="data"
           :style="{ width: element.options.width }"
           :disabled="disabled || element.options.disabled"
+          v-bind="element.options"
         >
           <el-radio
             v-for="item of element.options.remote
@@ -75,6 +42,7 @@
             : element.options.options"
             :key="item.value"
             :label="item.value"
+            :border="element.options.border"
             :style="{
               display: element.options.inline ? 'inline-block' : 'block'
             }"
@@ -87,6 +55,7 @@
           v-model="data"
           :style="{ width: element.options.width }"
           :disabled="disabled || element.options.disabled"
+          v-bind="element.options"
         >
           <el-checkbox
             v-for="item of element.options.remote
@@ -115,6 +84,7 @@
           :format="element.options.format"
           :disabled="disabled || element.options.disabled"
           :style="{ width: element.options.width }"
+          v-bind="element.options"
         />
       </template>
   
@@ -128,6 +98,7 @@
           :format="element.options.format"
           :disabled="disabled || element.options.disabled"
           :style="{ width: element.options.width }"
+          v-bind="element.options"
         />
       </template>
   
@@ -149,11 +120,10 @@
           :filterable="element.options.filterable"
           :disabled="disabled || element.options.disabled"
           :style="{ width: element.options.width }"
+          v-bind="element.options"
         >
           <el-option
-            v-for="item of element.options.remote
-            ? element.options.remoteOptions
-            : element.options.options"
+            v-for="item of element.options.options"
             :key="item.value"
             :value="item.value"
             :label="element.options.showLabel ? item.label : item.value"

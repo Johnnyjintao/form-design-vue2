@@ -292,7 +292,7 @@ import generateCode from '@/utils/generateCode'
       overflow-y: auto;
     }
     &.right{
-      width: 350px;
+      width: 400px;
     }
 
     .form-d-card-title{

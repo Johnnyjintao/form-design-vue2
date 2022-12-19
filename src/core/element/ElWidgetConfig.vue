@@ -455,9 +455,6 @@
           </el-radio-group>
         </el-form-item>
 
-        <el-form-item label="枚举类型">
-          <el-input v-model:value="data.options.rules.enum" />
-        </el-form-item>
 
         <el-form-item label="字段长度">
           <el-input v-model.number="data.options.rules.len" />

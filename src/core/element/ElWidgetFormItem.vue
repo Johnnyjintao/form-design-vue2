@@ -11,7 +11,7 @@
       <template v-if="element.type === 'input'">
         <el-input
           readonly
-          :modelValue="element.options.defaultValue"
+          v-model="element.options.defaultValue"
           :style="{ width: element.options.width }"
           :placeholder="element.options.placeholder"
           :maxlength="parseInt(element.options.maxlength)"
@@ -37,7 +37,7 @@
       <template v-if="element.type === 'password'">
         <el-input
           readonly
-          :modelValue="element.options.defaultValue"
+          v-model="element.options.defaultValue"
           :style="{ width: element.options.width }"
           :placeholder="element.options.placeholder"
           :maxlength="parseInt(element.options.maxlength)"
@@ -66,7 +66,7 @@
           resize="none"
           readonly
           :rows="element.options.rows"
-          :modelValue="element.options.defaultValue"
+          v-model="element.options.defaultValue"
           :style="{ width: element.options.width }"
           :placeholder="element.options.placeholder"
           :maxlength="parseInt(element.options.maxlength)"
@@ -79,7 +79,7 @@
 
       <template v-if="element.type === 'number'">
         <el-input-number
-          :modelValue="element.options.defaultValue"
+          v-model="element.options.defaultValue"
           :style="{ width: element.options.width }"
           :max="element.options.max"
           :min="element.options.min"
@@ -89,7 +89,7 @@
 
       <template v-if="element.type === 'radio'">
         <el-radio-group
-          :modelValue="element.options.defaultValue"
+          v-model="element.options.defaultValue"
           :style="{ width: element.options.width }"
           :disabled="element.options.disabled"
         >
@@ -97,6 +97,7 @@
             v-for="item of element.options.options"
             :key="item.value"
             :label="item.value"
+            :border="element.options.border"
             :style="{
               display: element.options.inline ? 'inline-block' : 'block'
             }"
@@ -107,7 +108,7 @@
 
       <template v-if="element.type === 'checkbox'">
         <el-checkbox-group
-          :modelValue="element.options.defaultValue"
+          v-model="element.options.defaultValue"
           :style="{ width: element.options.width }"
           :disabled="element.options.disabled"
         >
@@ -115,6 +116,7 @@
             v-for="item of element.options.options"
             :key="item.value"
             :label="item.value"
+            :border="element.options.border"
             :style="{
               display: element.options.inline ? 'inline-block' : 'block'
             }"
@@ -125,7 +127,7 @@
 
       <template v-if="element.type === 'time'">
         <el-time-picker
-          :modelValue="element.options.defaultValue"
+          v-model="element.options.defaultValue"
           :placeholder="element.options.placeholder"
           :readonly="element.options.readonly"
           :editable="element.options.editable"
@@ -138,7 +140,7 @@
 
       <template v-if="element.type === 'date'">
         <el-date-picker
-          :modelValue="element.options.defaultValue"
+          v-model="element.options.defaultValue"
           :placeholder="element.options.placeholder"
           :readonly="element.options.readonly"
           :editable="element.options.editable"
@@ -146,12 +148,14 @@
           :format="element.options.format"
           :disabled="element.options.disabled"
           :style="{ width: element.options.width }"
+          :type="element.options.type"
+          v-bind="element.options"
         />
       </template>
 
       <template v-if="element.type === 'rate'">
         <el-rate
-          :modelValue="element.options.defaultValue"
+          v-model="element.options.defaultValue"
           :max="element.options.max"
           :allowHalf="element.options.allowHalf"
           :disabled="element.options.disabled"
@@ -160,7 +164,7 @@
 
       <template v-if="element.type === 'select'">
         <el-select
-          :modelValue="element.options.defaultValue"
+          v-model="element.options.defaultValue"
           :multiple="element.options.multiple"
           :placeholder="element.options.placeholder"
           :clearable="element.options.clearable"
@@ -179,7 +183,7 @@
 
       <template v-if="element.type === 'switch'">
         <el-switch
-          :modelValue="element.options.defaultValue"
+          v-model="element.options.defaultValue"
           :active-text="element.options.activeText"
           :inactive-text="element.options.inactiveText"
           :disabled="element.options.disabled"
@@ -188,7 +192,7 @@
 
       <template v-if="element.type === 'slider'">
         <el-slider
-          :modelValue="element.options.defaultValue"
+          v-model="element.options.defaultValue"
           :min="element.options.min"
           :max="element.options.max"
           :step="element.options.step"
@@ -234,7 +238,7 @@
 
       <template v-if="element.type === 'cascader'">
         <el-cascader
-          :modelValue="element.options.defaultValue"
+          v-model="element.options.defaultValue"
           :options="element.options.remoteOptions"
           :placeholder="element.options.placeholder"
           :filterable="element.options.filterable"
