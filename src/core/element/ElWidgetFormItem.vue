@@ -34,59 +34,24 @@
         </el-input>
       </template>
 
-      <template v-if="element.type === 'password'">
-        <el-input
-          readonly
+      <template v-if="element.type === 'select'">
+        <el-select
           v-model="element.options.defaultValue"
-          :style="{ width: element.options.width }"
+          :multiple="element.options.multiple"
           :placeholder="element.options.placeholder"
-          :maxlength="parseInt(element.options.maxlength)"
           :clearable="element.options.clearable"
+          :filterable="element.options.filterable"
           :disabled="element.options.disabled"
-          :show-password="element.options.showPassword"
+          :style="{ width: element.options.width }"
         >
-          <template #prefix v-if="element.options.prefix">
-            {{ element.options.prefix }}
-          </template>
-          <template #suffix v-if="element.options.suffix">
-            {{ element.options.suffix }}
-          </template>
-          <template #prepend v-if="element.options.prepend">
-            {{ element.options.prepend }}
-          </template>
-          <template #append v-if="element.options.append">
-            {{ element.options.append }}
-          </template>
-        </el-input>
+          <el-option
+            v-for="item of element.options.options"
+            :key="item.value"
+            :value="item.value"
+            :label="element.options.showLabel ? item.label : item.value"
+          />
+        </el-select>
       </template>
-
-      <template v-if="element.type === 'textarea'">
-        <el-input
-          type="textarea"
-          resize="none"
-          readonly
-          :rows="element.options.rows"
-          v-model="element.options.defaultValue"
-          :style="{ width: element.options.width }"
-          :placeholder="element.options.placeholder"
-          :maxlength="parseInt(element.options.maxlength)"
-          :show-word-limit="element.options.showWordLimit"
-          :autosize="element.options.autosize"
-          :clearable="element.options.clearable"
-          :disabled="element.options.disabled"
-        />
-      </template>
-
-      <template v-if="element.type === 'number'">
-        <el-input-number
-          v-model="element.options.defaultValue"
-          :style="{ width: element.options.width }"
-          :max="element.options.max"
-          :min="element.options.min"
-          :disabled="element.options.disabled"
-        />
-      </template>
-
       <template v-if="element.type === 'radio'">
         <el-radio-group
           v-model="element.options.defaultValue"
@@ -153,6 +118,28 @@
         />
       </template>
 
+      <template v-if="element.type === 'numrange'">
+          <div class="mel-range-input" :style="{ width: element.options.width }">
+            <el-input
+              class="range-ipt min"
+              type="number"
+              :placeholder="element.options.minPlaceholder"
+              :maxlength="element.options.maxlength"
+              v-model="element.options.minOptions"
+              :disabled="element.options.disabled"
+            />
+            <span class="range-ipt-center">~</span>
+            <el-input
+              class="range-ipt max"
+              type="number"
+              :placeholder="element.options.maxPlaceholder"
+              :maxlength="element.options.maxlength"
+              v-model="element.options.max"
+              :disabled="element.options.disabled"
+            />
+          </div>
+      </template>
+
       <template v-if="element.type === 'rate'">
         <el-rate
           v-model="element.options.defaultValue"
@@ -162,24 +149,7 @@
         />
       </template>
 
-      <template v-if="element.type === 'select'">
-        <el-select
-          v-model="element.options.defaultValue"
-          :multiple="element.options.multiple"
-          :placeholder="element.options.placeholder"
-          :clearable="element.options.clearable"
-          :filterable="element.options.filterable"
-          :disabled="element.options.disabled"
-          :style="{ width: element.options.width }"
-        >
-          <el-option
-            v-for="item of element.options.options"
-            :key="item.value"
-            :value="item.value"
-            :label="element.options.showLabel ? item.label : item.value"
-          />
-        </el-select>
-      </template>
+
 
       <template v-if="element.type === 'switch'">
         <el-switch
@@ -203,7 +173,19 @@
       </template>
 
       <template v-if="element.type == 'text'">
-        <span>{{ element.options.defaultValue }}</span>
+        <span :style="element.options.style">{{ element.options.defaultValue }}</span>
+      </template>
+
+      <template v-if="element.type == 'image'">
+        <div class="form-item-image" :style="{ width: element.options.width }">
+          <el-image 
+            :src="item.url"
+            :style="{width:element.options.imgWidth,height:element.options.imgHeight}"
+            :key="item.key"
+            :preview-src-list="initPreviewSrcList(item.url,element.options.previewSrcList)"
+            v-for="item of element.options.srcList">
+          </el-image>  
+        </div>
       </template>
 
       <template v-if="element.type === 'img-upload'">
@@ -279,6 +261,18 @@ export default defineComponent({
       type: Object
     }
   },
-  emits: ['copy', 'delete']
+  emits: ['copy', 'delete'],
+  methods:{
+    initPreviewSrcList(url,list){
+      let newList = [];
+      list.forEach(item=>{
+        if(item.url !== url){
+          newList.push(item.url)
+        }
+      })
+      newList.unshift(url);
+      return newList;
+    }
+  }
 })
 </script>

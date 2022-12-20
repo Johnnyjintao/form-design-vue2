@@ -20,7 +20,7 @@ export const widgetForm = {
     labelPosition: 'right'
   }
 }
-// 基础组件
+// 表单组件
 export const basicComponents = [
   {
     label: '输入框',
@@ -69,19 +69,6 @@ export const basicComponents = [
           value: 'value3'
         }
       ],
-      rules
-    }
-  },
-  {
-    label: '计数器',
-    type: 'number',
-    options: {
-      width: '200px',
-      defaultValue: 0,
-      min: 0,
-      max: 100,
-      step: 1,
-      disabled: false,
       rules
     }
   },
@@ -183,6 +170,23 @@ export const basicComponents = [
     }
   },
   {
+    label: '数字范围',
+    type: 'numrange',
+    options: {
+      min:0,
+      max:0,
+      width: '200px',
+      minPlaceholder: '请输入最小值',
+      maxPlaceholder: '请输入最大值',
+      format: '',
+      readonly: false,
+      editable: true,
+      clearable: true,
+      disabled: false,
+      rules
+    }
+  },
+  {
     label: '评分',
     type: 'rate',
     options: {
@@ -218,64 +222,29 @@ export const basicComponents = [
       range: false,
       rules
     }
-  },
+  }
+]
+// 展示组件
+export const advanceComponents = [
   {
     label: '文字',
     type: 'text',
     options: {
-      defaultValue: 'This is a text'
+      defaultValue: 'This is a text',
+      style: '',
     }
-  }
-]
-// 高级组件
-export const advanceComponents = [
+  },
   {
     label: '图片',
-    type: 'img-upload',
+    type: 'image',
     options: {
-      defaultValue: [],
-      name: 'file',
-      action: 'http://example.com/upload',
-      method: 'post',
-      listType: 'text',
-      accept: 'image/*',
-      limit: 3,
-      multiple: false,
-      disabled: false,
-      rules
+      width:"100%",
+      imgWidth:"100px",
+      imgHeight:"100px",
+      srcList: [{url:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"}],
+      previewSrcList:[{url:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"}],
     }
   },
-  {
-    label: '富文本编辑器',
-    type: 'richtext-editor',
-    options: {
-      defaultValue: '',
-      width: '200px',
-      disabled: false
-    }
-  },
-  {
-    label: '级联选择器',
-    type: 'cascader',
-    options: {
-      defaultValue: [],
-      width: '200px',
-      placeholder: '',
-      disabled: false,
-      clearable: false,
-      filterable: false,
-      remote: true,
-      remoteOptions: [],
-      props: {
-        label: 'label',
-        value: 'value',
-        children: 'children'
-      },
-      remoteFunc:
-        'https://raw.githubusercontent.com/fuchengwei/vue-form-create/master/mock/mock.json',
-      rules
-    }
-  }
 ]
 // 布局组件
 export const layoutComponents = [

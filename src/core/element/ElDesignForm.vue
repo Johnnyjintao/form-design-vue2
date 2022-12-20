@@ -2,8 +2,8 @@
   <div class="formDesign">
     <div class="formDesign-content">
       <div class="form-d-card left">
-        <ComponentGroup title="基础组件" :list="basicComponents"/>
-        <ComponentGroup title="高级组件" :list="advanceComponents"/>
+        <ComponentGroup title="表单组件" :list="basicComponents"/>
+        <ComponentGroup title="展示组件" :list="advanceComponents"/>
         <ComponentGroup title="布局组件" :list="layoutComponents"/>
       </div>
       

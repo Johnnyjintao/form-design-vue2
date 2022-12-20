@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import ElRealFormItem from './components/ElRealFormItem.vue'
+import ElRealFormItem from './ElRealFormItem.vue'
 import { widgetForm } from '@/config/element'
 
 export default {
@@ -111,7 +111,9 @@ export default {
           } else {
             this.$set(this.model,model,list[index].options.defaultValue)
           }
-          this.$set(this.rules,model,[list[index].options.rules])
+          if(list[index].options.rules){
+            this.$set(this.rules,model,[list[index].options.rules])
+          }
         }
       }
       console.log("this.model",this.model)

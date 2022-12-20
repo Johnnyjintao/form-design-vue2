@@ -8,14 +8,14 @@
       <el-input v-model="data.label" />
     </el-form-item>
 
-    <el-form-item label="宽度" v-if="hasKey('width')">
+    <el-form-item label="宽度" v-if="data.type !== 'grid' && hasKey('width')">
       <el-input v-model="data.options.width" />
     </el-form-item>
 
     <component :is="data.type+`Config`" :select.sync="select">
     </component>
   
-    <template v-if="hasKey('rules')">
+    <template v-if="data.type !== 'grid' && hasKey('rules')">
       <h4>验证规则</h4>
 
       <el-form-item label="触发时机">
@@ -76,6 +76,13 @@ import checkboxConfig from './checkboxConfig.vue';
 import numberConfig from './numberConfig.vue';
 import timeConfig from './timeConfig.vue';
 import dateConfig from './dateConfig.vue';
+import numrangeConfig from './numrangeConfig.vue';
+import rateConfig from './rateConfig.vue';
+import switchConfig from './switchConfig.vue';
+import sliderConfig from './sliderConfig.vue';
+import textConfig from './textConfig.vue';
+import imageConfig from './imageConfig.vue';
+import gridConfig from './gridConfig.vue';
 export default {
   name: 'ElWidgetConfig',
   components: {
@@ -86,6 +93,13 @@ export default {
     numberConfig,
     timeConfig,
     dateConfig,
+    numrangeConfig,
+    rateConfig,
+    switchConfig,
+    sliderConfig,
+    textConfig,
+    imageConfig,
+    gridConfig
   },
   props: {
     select: {

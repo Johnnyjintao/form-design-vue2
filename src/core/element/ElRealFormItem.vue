@@ -17,16 +17,25 @@
           <template #append v-if="element.options.append">{{ element.options.append }}</template>
         </el-input>
       </template>
-  
-      <template v-if="element.type === 'number'">
-        <el-input-number
+
+      <template v-if="element.type === 'select'">
+        <el-select
           v-model="data"
-          :style="{ width: element.options.width }"
-          :max="element.options.max"
-          :min="element.options.min"
+          :multiple="element.options.multiple"
+          :placeholder="element.options.placeholder"
+          :clearable="element.options.clearable"
+          :filterable="element.options.filterable"
           :disabled="disabled || element.options.disabled"
+          :style="{ width: element.options.width }"
           v-bind="element.options"
-        />
+        >
+          <el-option
+            v-for="item of element.options.options"
+            :key="item.value"
+            :value="item.value"
+            :label="element.options.showLabel ? item.label : item.value"
+          />
+        </el-select>
       </template>
   
       <template v-if="element.type === 'radio'">
@@ -101,6 +110,28 @@
           v-bind="element.options"
         />
       </template>
+      
+      <template v-if="element.type === 'numrange'">
+          <div class="mel-range-input" :style="{ width: element.options.width }">
+            <el-input
+              class="range-ipt min"
+              type="number"
+              :placeholder="element.options.minPlaceholder"
+              :maxlength="element.options.maxlength"
+              v-model="element.options.minOptions"
+              :disabled="element.options.disabled"
+            />
+            <span class="range-ipt-center">~</span>
+            <el-input
+              class="range-ipt max"
+              type="number"
+              :placeholder="element.options.maxPlaceholder"
+              :maxlength="element.options.maxlength"
+              v-model="element.options.max"
+              :disabled="element.options.disabled"
+            />
+          </div>
+      </template>
   
       <template v-if="element.type === 'rate'">
         <el-rate
@@ -109,26 +140,6 @@
           :allowHalf="element.options.allowHalf"
           :disabled="disabled || element.options.disabled"
         />
-      </template>
-  
-      <template v-if="element.type === 'select'">
-        <el-select
-          v-model="data"
-          :multiple="element.options.multiple"
-          :placeholder="element.options.placeholder"
-          :clearable="element.options.clearable"
-          :filterable="element.options.filterable"
-          :disabled="disabled || element.options.disabled"
-          :style="{ width: element.options.width }"
-          v-bind="element.options"
-        >
-          <el-option
-            v-for="item of element.options.options"
-            :key="item.value"
-            :value="item.value"
-            :label="element.options.showLabel ? item.label : item.value"
-          />
-        </el-select>
       </template>
   
       <template v-if="element.type === 'switch'">
@@ -153,7 +164,19 @@
       </template>
   
       <template v-if="element.type == 'text'">
-        <span>{{ element.options.defaultValue }}</span>
+        <span :style="element.options.style">{{ element.options.defaultValue }}</span>
+      </template>
+
+      <template v-if="element.type == 'image'">
+        <div class="form-item-image" :style="{ width: element.options.width }">
+          <el-image 
+            :src="item.url"
+            :style="{width:element.options.imgWidth,height:element.options.imgHeight}"
+            :key="item.key"
+            :preview-src-list="initPreviewSrcList(item.url,element.options.previewSrcList)"
+            v-for="item of element.options.srcList">
+          </el-image>  
+        </div>
       </template>
   
       <template v-if="element.type === 'img-upload'">
@@ -199,7 +222,6 @@
   
   <script>
   import SvgIcon from '@/components/SvgIcon.vue'
-import { mounted } from 'vue2-ace-editor'
   
   export default {
     name: 'ElGenerateFormItem',
@@ -255,6 +277,16 @@ import { mounted } from 'vue2-ace-editor'
       },
       handleUploadSuccess(_res, _file, fileList) {
         this.data = fileList
+      },
+      initPreviewSrcList(url,list){
+        let newList = [];
+        list.forEach(item=>{
+          if(item.url !== url){
+            newList.push(item.url)
+          }
+        })
+        newList.unshift(url);
+        return newList;
       }
     }
   }
