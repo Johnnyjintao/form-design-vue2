@@ -94,12 +94,14 @@
       data:{
         deep:true,
         handler(val){
+          
           this.$emit('update:select',val)
         },
       },
       select:{
         deep:true,
         handler(val){
+          console.log("111")
           this.data = val;
         },
       },
@@ -146,7 +148,7 @@
           this.data.options.defaultValue.length
             ? (this.data.options.defaultValue =
             this.data.options.defaultValue[0])
-            : (this.data.options.defaultValue = null)
+            : (this.data.options.defaultValue = "")
         }
       }
     }

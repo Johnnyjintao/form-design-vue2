@@ -43,25 +43,26 @@
           title="JSON格式如下，直接复制生成的json覆盖此处代码点击确定即可"
           style="margin-bottom: 10px"
         />
-        <CodeEditor :value="jsonEg" language="json" />
+        <CodeEditor :value="jsonEg" language="json" ref="jsonEg" />
         <template #footer>
           <el-button @click="() => (uploadJsonVisible = false)">取消</el-button>
           <el-button type="primary" @click="handleUploadJson">导入</el-button>
         </template>
       </el-dialog>
 
-      <el-dialog :visible.sync="previewVisible" title="预览" width="800px">
-        <ElRealForm
+      <el-dialog :visible.sync="previewVisible" title="预览" width="70%">
+        <ElGeneratorForm
           ref="realFormRef"
           v-if="previewVisible"
           :data="widgetForm"
+          @change="onFormChange"
         />
         <template #footer>
           <el-button @click="handleReset">重置</el-button>
           <el-button type="primary" @click="handleGetData">获取数据</el-button>
         </template>
 
-        <el-dialog :visible.sync="dataJsonVisible" title="获取数据" width="800px" zIndex="999">
+        <el-dialog :visible.sync="dataJsonVisible" title="获取数据" width="70%" zIndex="999">
           <CodeEditor :value="dataJsonTemplate" language="json" readonly />
 
           <template #footer>
@@ -77,7 +78,7 @@
         </el-dialog>
       </el-dialog>
 
-      <el-dialog :visible.sync="generateJsonVisible" title="生成JSON" width="800px">
+      <el-dialog :visible.sync="generateJsonVisible" title="生成JSON" width="70%">
         <CodeEditor :value="generateJsonTemplate" language="json" readonly />
 
         <template #footer>
@@ -86,7 +87,7 @@
         </template>
       </el-dialog>
 
-      <el-dialog :visible.sync="dataCodeVisible" title="生产代码" width="800px">
+      <el-dialog :visible.sync="dataCodeVisible" title="生产代码" width="70%">
         <CodeEditor :value="dataCodeTemplate" language="html" readonly />
         <template #footer>
           <el-button @click="() => (dataCodeVisible = false)"
@@ -113,7 +114,7 @@ import ElCustomHeader from './ElCustomHeader.vue'
 import ElWidgetForm from './ElWidgetForm.vue'
 import ElFormConfig from './ElFormConfig.vue'
 import ElWidgetConfig from './ElWidgetConfig/index.vue'
-import ElRealForm from './ElRealForm.vue'
+import ElGeneratorForm from '@/components/ElGeneratorForm/index.vue'
 
 import CodeEditor from '@/components/CodeEditor.vue'
 import { copy } from '@/utils'
@@ -148,8 +149,8 @@ import generateCode from '@/utils/generateCode'
       ElWidgetForm,
       ElFormConfig,
       ElWidgetConfig,
-      ElRealForm,
-      CodeEditor
+      CodeEditor,
+      ElGeneratorForm
     },
     props: {
       preview: {
@@ -176,6 +177,9 @@ import generateCode from '@/utils/generateCode'
     mounted(){
     },  
     methods:{
+      onFormChange(model){
+        console.log(model)
+      },
       handleCopyClick(text){
         copy(text)
         this.$message.success('Copy成功')
@@ -191,21 +195,21 @@ import generateCode from '@/utils/generateCode'
         })
       },
       handleUploadJson() {
+        let data = this.$refs.jsonEg.getData();
         try {
           this.widgetForm.list = []
-          this.widgetForm = {...this.widgetForm, ...JSON.parse(this.jsonEg)}
+          this.widgetForm = JSON.parse(data)
           if (this.widgetForm.list) {
             this.widgetFormSelect = this.widgetForm.list[0]
           }
-
+          console.log(this.widgetForm)
           this.uploadJsonVisible = false
           this.$message.success('导入成功')
         } catch (error) {
-          this.$message.error('导入失败')
+          this.$message.error('导入失败,格式错误')
         }
       },
       handleGenerateJson(){
-        console.log(this.widgetForm)
         this.generateJsonTemplate = JSON.stringify(this.widgetForm,null,2);
         this.generateJsonVisible = true;
       },

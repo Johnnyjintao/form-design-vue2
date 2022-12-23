@@ -26,7 +26,7 @@ export const basicComponents = [
     label: '输入框',
     type: 'input',
     options: {
-      width: '200px',
+      width: '100%',
       defaultValue: '',
       placeholder: '请输入',
       maxlength: null,
@@ -35,7 +35,7 @@ export const basicComponents = [
       prepend: '',
       append: '',
       disabled: false,
-      clearable: false,
+      clearable: true,
       readonly: false,
       rules
     }
@@ -44,12 +44,12 @@ export const basicComponents = [
     label: '下拉选择框',
     type: 'select',
     options: {
-      defaultValue: '',
-      width: '200px',
+      defaultValue: "",
+      width: '100%',
       multiple: false,
       placeholder: '请选择',
       filterable: false,
-      clearable: false,
+      clearable: true,
       disabled: false,
       props: {
         label: 'label',
@@ -77,7 +77,7 @@ export const basicComponents = [
     type: 'radio',
     options: {
       defaultValue: '',
-      width: '200px',
+      width: '100%',
       inline: true,
       remote: false,
       showLabel: false,
@@ -108,7 +108,7 @@ export const basicComponents = [
     type: 'checkbox',
     options: {
       defaultValue: [],
-      width: '200px',
+      width: '100%',
       inline: true,
       remote: false,
       showLabel: false,
@@ -142,7 +142,7 @@ export const basicComponents = [
     type: 'time',
     options: {
       defaultValue: '',
-      width: '200px',
+      width: '100%',
       placeholder: '请选择时间',
       format: 'HH:mm:ss',
       valueFormat: 'HH:mm:ss',
@@ -159,7 +159,7 @@ export const basicComponents = [
     options: {
       type:"date",
       defaultValue: '',
-      width: '200px',
+      width: '100%',
       placeholder: '请选择',
       format: '',
       readonly: false,
@@ -175,7 +175,7 @@ export const basicComponents = [
     options: {
       min:0,
       max:0,
-      width: '200px',
+      width: '100%',
       minPlaceholder: '请输入最小值',
       maxPlaceholder: '请输入最大值',
       format: '',
@@ -190,7 +190,7 @@ export const basicComponents = [
     label: '评分',
     type: 'rate',
     options: {
-      defaultValue: 0,
+      defaultValue: null,
       max: 5,
       allowHalf: false,
       disabled: false,
@@ -214,7 +214,7 @@ export const basicComponents = [
     type: 'slider',
     options: {
       defaultValue: 0,
-      width: '200px',
+      width: '100%',
       min: 0,
       max: 100,
       step: 1,
