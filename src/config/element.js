@@ -51,10 +51,6 @@ export const basicComponents = [
       filterable: false,
       clearable: true,
       disabled: false,
-      props: {
-        label: 'label',
-        value: 'value'
-      },
       options: [
         {
           label: 'label1',
@@ -79,8 +75,7 @@ export const basicComponents = [
       defaultValue: '',
       width: '100%',
       inline: true,
-      remote: false,
-      showLabel: false,
+      disabled: false,
       options: [
         {
           label: 'label1',
@@ -95,11 +90,6 @@ export const basicComponents = [
           value: 'value3'
         }
       ],
-      props: {
-        value: 'value',
-        label: 'label'
-      },
-      disabled: false,
       rules
     }
   },
@@ -178,7 +168,6 @@ export const basicComponents = [
       width: '100%',
       minPlaceholder: '请输入最小值',
       maxPlaceholder: '请输入最大值',
-      format: '',
       readonly: false,
       editable: true,
       clearable: true,

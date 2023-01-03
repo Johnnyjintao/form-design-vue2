@@ -14,7 +14,7 @@
             :style="{
               display: element.options.inline ? 'inline-block' : 'block'
             }"
-          >{{ element.options.showLabel ? item.label : item.value }}</el-radio>
+          >{{ item.label }}</el-radio>
         </el-radio-group>
     </el-form-item>
   </template>
