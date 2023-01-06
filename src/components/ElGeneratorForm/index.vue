@@ -9,8 +9,9 @@
       :label-position="widgetForm.config.labelPosition"
       :label-width="`${widgetForm.config.labelWidth}px`"
       :hide-required-asterisk="widgetForm.config.hideRequiredAsterisk"
+      :style="initFormStyle()"
     >
-      <template v-for="(element, index) of widgetForm.list">
+      <template v-for="(element, index) of widgetForm.list" v-if="initShowNum(index)">
         <template v-if="element.type === 'grid'">
           <el-row
             type="flex"
@@ -27,6 +28,7 @@
             >
               <component
                 v-for="colItem of col.list"
+                v-if="colItem.type!='toggle'"
                 :key="colItem.key"
                 :is="colItem.type+'Item'"
                 :model.sync="model"
@@ -39,7 +41,7 @@
           </el-row>
         </template>
         <component
-          v-else
+          v-if="widgetForm.list[index].type!='toggle'"
           :is="widgetForm.list[index].type+'Item'"
           :model.sync="model"
           :key="element.key"
@@ -50,6 +52,13 @@
         />
       </template>
     </el-form>
+
+    <toggle v-if="toggleData"
+          :open="isopen"
+          :model.sync="model"
+          :element="toggleData"
+          :config="data.config"
+          @change="(val)=>{isopen=val}"></toggle>
   </div>
 </template>
   
@@ -66,6 +75,7 @@
   import sliderItem from './slider.vue';
   import textItem from './text.vue';
   import imageItem from './image.vue';
+  import toggle from './toggle.vue';
 
   import { widgetForm } from '@/config/element'
   
@@ -84,6 +94,7 @@
         sliderItem,
         textItem,
         imageItem,
+        toggle
     },
     props: {
       data: {
@@ -102,7 +113,9 @@
       return {
         model: {},
         rules: {},
-        widgetForm: (this.$props.data && JSON.parse(JSON.stringify(this.$props.data))) ?? widgetForm
+        widgetForm: (this.$props.data && JSON.parse(JSON.stringify(this.$props.data))) ?? widgetForm,
+        toggleData:null,
+        isopen:true,
       }
     },
     watch:{
@@ -121,6 +134,25 @@
       this.generateModel(this.widgetForm?.list ?? [])
     },
     methods:{
+      initFormStyle(){
+        if(this.toggleData && this.toggleData.options.type==='height' && this.isopen){
+          return `height:auto;`
+        }
+        if(this.toggleData && this.toggleData.options.type==='height' && !this.isopen){
+          return `height:${this.toggleData.options.height};overflow:hidden;`
+        }
+        return  ""
+      },
+      initShowNum(index){
+        if(this.toggleData && this.toggleData.options.type==='num' && !this.isopen){
+          let num = this.toggleData.options.num;
+          if(index+1 > num){
+            return false
+          }
+        }
+        return true;
+      },
+     
       onFormChange(model){
         this.$emit("change",model)
       },
@@ -141,6 +173,11 @@
             if(list[index].options.rules){
               this.$set(this.rules,model,[list[index].options.rules])
             }
+          }
+
+          if(list[index].type == 'toggle'){
+            this.toggleData = list[index];
+            this.isopen = list[index].options.defaultValue;
           }
         }
       },

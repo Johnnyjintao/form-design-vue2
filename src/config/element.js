@@ -211,7 +211,7 @@ export const basicComponents = [
       range: false,
       rules
     }
-  }
+  },
 ]
 // 展示组件
 export const advanceComponents = [
@@ -254,6 +254,17 @@ export const layoutComponents = [
       gutter: 0,
       justify: 'start',
       align: 'top'
-    }
+    },
+  },
+  {
+    label: '展开/收起',
+    type: 'toggle',
+    options: {
+      alignItems:"center",
+      justifyContent:"center",
+      type:"height",//height 按高度展开收起  num按组件个数展开收起
+      height:"70px",
+      num:3,
+    },
   }
 ]

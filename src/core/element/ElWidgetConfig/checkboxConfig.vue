@@ -88,7 +88,6 @@
   
   
       handleInsertOption(){
-        debugger
         const index = this.data.options.options.length + 1
         this.data.options.options.push({
           label: `label${index}`,

@@ -185,13 +185,19 @@ export default {
       const { newIndex } = event
       const key = v4().replaceAll('-', '')
       const list = JSON.parse(JSON.stringify(this.$props.widgetForm.list))
-
+      let toggles = list.filter(item=>item.type==='toggle')
+      if(list[newIndex].type === "toggle" && toggles.length>1){
+        this.$message.error('展开/收起组件仅能有一个');
+        return;
+      }
       list[newIndex] = {
         ...list[newIndex],
         key,
         model: `${list[newIndex].type}_${key}`,
         rules: []
       }
+
+      
 
       if (
         list[newIndex].type === 'radio' ||

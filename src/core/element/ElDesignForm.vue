@@ -67,13 +67,10 @@
 
           <template #footer>
             <el-button @click="() => (dataJsonVisible = false)"
-              >取消</el-button
-            >
+              >取消</el-button>
             <el-button
               type="primary"
-              @click="handleCopyClick(dataJsonTemplate)"
-              >Copy</el-button
-            >
+              @click="handleCopyClick(dataJsonTemplate)">Copy</el-button>
           </template>
         </el-dialog>
       </el-dialog>

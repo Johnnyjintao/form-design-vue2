@@ -1,10 +1,10 @@
 <template>
   <el-form label-position="right" label-width="85px" size="small" v-if="data" :key="data.key">
-    <el-form-item label="字段标识" v-if="data.type !== 'grid'">
+    <el-form-item label="字段标识" v-if="data.type !== 'grid' && data.type !== 'toggle'">
       <el-input v-model="data.model" />
     </el-form-item>
 
-    <el-form-item label="标题" v-if="data.type !== 'grid'">
+    <el-form-item label="标题" v-if="data.type !== 'grid' && data.type !== 'toggle'">
       <el-input v-model="data.label" />
     </el-form-item>
 
@@ -83,6 +83,7 @@ import sliderConfig from './sliderConfig.vue';
 import textConfig from './textConfig.vue';
 import imageConfig from './imageConfig.vue';
 import gridConfig from './gridConfig.vue';
+import toggleConfig from './toggleConfig.vue';
 export default {
   name: 'ElWidgetConfig',
   components: {
@@ -99,7 +100,8 @@ export default {
     sliderConfig,
     textConfig,
     imageConfig,
-    gridConfig
+    gridConfig,
+    toggleConfig,
   },
   props: {
     select: {
