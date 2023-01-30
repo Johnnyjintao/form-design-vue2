@@ -274,8 +274,8 @@ import generateCode from '@/utils/generateCode'
       margin-right: 0;
     }
     &.left{
-      min-width: 200px;
-      max-width: 200px;
+      min-width: 250px;
+      max-width: 250px;
       overflow-y: auto;
     }
     &.center{

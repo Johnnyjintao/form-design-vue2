@@ -9,10 +9,6 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 Vue.use(DesignForm);
 
-// import Antd from 'ant-design-vue';
-// import 'ant-design-vue/dist/antd.css';
-// Vue.use(Antd);
-
 
 new Vue({
   render: h => h(App),

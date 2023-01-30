@@ -3,12 +3,10 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" href="https://unpkg.com/ant-design-vue@next/dist/antd.min.css" />
 </head>
 
 <body>
   <div id="app">
-    <antd-design-form />
   </div>
   <script src="https://unpkg.com/vue@next/dist/vue.global.prod.js"></script>
   <script src="https://unpkg.com/ace-builds/src-noconflict/ace.js"></script>
@@ -21,12 +19,10 @@
   <script src="https://unpkg.com/dayjs/plugin/weekYear.js"></script>
   <script src="https://unpkg.com/dayjs/plugin/advancedFormat.js"></script>
   <script src="https://unpkg.com/vue-form-create/dist/formCreate.umd.min.js"></script>
-  <script src="https://unpkg.com/ant-design-vue@next/dist/antd.min.js"></script>
   <script>
     const { createApp, reactive, toRefs } = Vue
 
     createApp({})
-      .use(antd)
       .use(formCreate)
       .mount('#app')
   </script>

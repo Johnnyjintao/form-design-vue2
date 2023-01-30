@@ -10,7 +10,8 @@
         >
           <transition-group>
               <div class="widget-c" v-for="listitem in list" :key="listitem.type">
-                {{listitem.label}}
+                  <SvgIcon :iconClass="listitem.type" />
+                  <span>{{ listitem.label }}</span>
               </div>
           </transition-group>
       </Draggable>
@@ -55,15 +56,24 @@ export default defineComponent({
   .widget-c{
     font-size: 12px;
     float: left;
-    padding: 5px 10px;
+    padding: 8px 10px;
     border-radius: 5px;
     margin: 0 10px 10px 0;
     cursor: all-scroll;
     background-color: aliceblue;
     color: #555555;
+    display: flex;
+    align-items: center;
     &:hover{
       outline: 2px solid rgb(222, 237, 251);
       outline-offset: -2px;
+    }
+    .svg-icon{
+      margin-right: 6px;
+      margin-left: 8px;
+      font-size: 14px;
+      display: inline-block;
+      vertical-align: middle;
     }
   }
 }
