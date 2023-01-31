@@ -76,16 +76,6 @@ export default {
         return element.options.defaultValue;
       }
       return false;
-    },
-    initPreviewSrcList(url,list){
-      let newList = [];
-      list.forEach(item=>{
-        if(item.url !== url){
-          newList.push(item.url)
-        }
-      })
-      newList.unshift(url);
-      return newList;
     }
   }
 }
