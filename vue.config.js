@@ -5,7 +5,9 @@ const resolve = (dir) => {
 }
 module.exports = defineConfig({
   transpileDependencies: true,
+  publicPath:"./",
   chainWebpack: (config) => {
+    config.entry('app').clear().add('./example/main.js')
     config.module.rule('svg').exclude.add(resolve('src/icons')).end()
     config.module
       .rule('icons')
